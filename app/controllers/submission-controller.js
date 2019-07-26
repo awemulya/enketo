@@ -56,6 +56,11 @@ function submit( req, res, next ) {
     surveyModel.get( id )
         .then( survey => {
             submissionUrl = communicator.getSubmissionUrl( survey.openRosaServer ) + query;
+            if (deprecatedId){
+                submissionUrl = submissionUrl + '?dep=' + deprecatedId;
+            }else if(survey.site && survey.site !='undefined'){
+                submissionUrl = submissionUrl + '?site=' + survey.site +'&form=' + survey.form;
+            }
             const credentials = userModel.getCredentials( req );
             return communicator.getAuthHeader( submissionUrl, credentials );
         } )

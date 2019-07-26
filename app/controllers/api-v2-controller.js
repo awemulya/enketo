@@ -180,6 +180,14 @@ function getExistingSurvey( req, res, next ) {
 }
 
 function getNewOrExistingSurvey( req, res, next ) {
+    const url = req.url;
+    let site = '';
+    let  form = '';
+    if (url.indexOf('=') > 0 ){
+        site = url.split('=')[1].split('_')[0];
+        form = url.split('=')[1].split('_')[1];
+    }
+    
     const survey = {
         openRosaServer: req.body.server_url || req.query.server_url,
         openRosaId: req.body.form_id || req.query.form_id,
@@ -208,7 +216,7 @@ function getNewOrExistingSurvey( req, res, next ) {
             }
             const status = storedSurvey ? 200 : 201;
             // even if id was found still call .set() method to update any properties
-            return surveyModel.set( survey )
+            return surveyModel.set( survey, site, form )
                 .then( id => {
                     if ( id ) {
                         if ( req.webformType === 'pdf' ) {
@@ -328,6 +336,8 @@ function cacheInstance( req, res, next ) {
                 }
                 // Create a new enketo ID.
                 return surveyModel.set( survey );
+                
+                
             }
             // Do not update properties if ID was found to avoid overwriting theme.
             return storedSurvey.enketoId;

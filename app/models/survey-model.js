@@ -50,7 +50,7 @@ function getSurvey( id ) {
     } );
 }
 
-function setSurvey( survey ) {
+function setSurvey( survey, site, form ) {
     return new Promise( ( resolve, reject ) => {
         // Set in db:
         // a) a record with key "id:"+ _createEnketoId(client.incr('surveys:counter')) and all survey info
@@ -74,7 +74,7 @@ function setSurvey( survey ) {
                     if ( id ) {
                         survey.active = true;
                         delete pending[ openRosaKey ];
-                        resolve( _updateProperties( id, survey ) );
+                        resolve( _updateProperties( id, survey, site, form ) );
                     } else {
                         resolve( _addSurvey( openRosaKey, survey ) );
                     }
@@ -113,9 +113,11 @@ function updateSurvey( survey ) {
     } );
 }
 
-function _updateProperties( id, survey ) {
+function _updateProperties( id, survey, site, form ) {
     return new Promise( ( resolve, reject ) => {
         const update = {};
+        update.site = site;
+        update.form= form;
         // create new object only including the updateable properties
         if ( typeof survey.openRosaServer !== 'undefined' ) {
             update.openRosaServer = survey.openRosaServer;
