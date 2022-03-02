@@ -105,7 +105,7 @@
         "istanbul": "^0.4.5",
         "istanbul-reporter-shield-badge": "^1.2.0",
         "jsdoc": "^3.6.3",
-        "karma": "4.2.x",
+        "karma": "6.3.x",
         "karma-chrome-launcher": "3.1.x",
         "karma-coverage": "^1.1.2",
         "karma-firefox-launcher": "1.2.x",
